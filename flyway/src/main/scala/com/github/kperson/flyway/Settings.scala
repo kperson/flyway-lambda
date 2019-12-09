@@ -8,8 +8,8 @@ import org.json4s.jackson.Serialization.read
 
 
 case class Settings(jdbcURL: String, dbUsername: Option[String], dbPassword: Option[String])
-case class SecretsManagerArn(secretsManagerArn: String, db: String)
-case class SecretSettings(host: String, port: String, password: String, username: String)
+case class SecretsManagerArn(secretsManagerArn: String, db: Option[String])
+case class SecretSettings(jdbcURL: Option[String], host: Option[String], port: Option[String], password: Option[String], username: Option[String])
 
 object SecretsManager {
 
@@ -22,7 +22,7 @@ object SecretsManager {
 
   def secretManagerSettings: Option[Settings] = {
     (Option(System.getenv("SECRETS_MANAGER_ARN")),  Option(System.getenv("DB"))) match {
-      case (Some(arn), Some(db)) => lambdaSettings(arn, db)
+      case (Some(arn), db) => lambdaSettings(arn, db)
       case _ => None
     }
   }
@@ -32,7 +32,7 @@ object SecretsManager {
     case _ => secretManagerSettings
   }
 
-  def lambdaSettings(arn: String, dbName: String): Option[Settings] = {
+  def lambdaSettings(arn: String, dbName: Option[String]): Option[Settings] = {
     try {
       implicit val formats: Formats = Serialization.formats(NoTypeHints)
       val manager = AWSSecretsManagerClientBuilder.standard().build()
@@ -40,7 +40,11 @@ object SecretsManager {
       req.setSecretId(arn)
       val response = manager.getSecretValue(req)
       val s = read[SecretSettings](response.getSecretString)
-      Some(Settings(s"jdbc:mysql://${s.host}:${s.port}/$dbName", Some(s.username), Some(s.password)))
+      (s.jdbcURL, s.host, s.port, dbName) match {
+        case (Some(url), _, _, _) => Some(Settings(url, s.username, s.password))
+        case (_, Some(host), Some(port), db) => Some(Settings(s"jdbc:mysql://$host:$port/$db", s.username, s.password))
+        case _ => None
+      }
     }
     catch {
       case _: ResourceNotFoundException => None

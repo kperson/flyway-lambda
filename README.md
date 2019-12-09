@@ -4,7 +4,7 @@
 
 ```hcl
 module "my_db_schema" {
-  source              = "github.com/kperson/flyway-lambda//terraform/mysql"
+  source              = "github.com/kperson/flyway-lambda//terraform"
   function_name       = "<my_migration_function>"
   db                  = "<my_database_name>"
   secrets_manager_arn = "<my_rds_data_app_formatted_secrets_arn>"
