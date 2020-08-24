@@ -42,7 +42,7 @@ object SecretsManager {
       val s = read[SecretSettings](response.getSecretString)
       (s.jdbcURL, s.host, s.port, dbName) match {
         case (Some(url), _, _, _) => Some(Settings(url, s.username, s.password))
-        case (_, Some(host), Some(port), db) => Some(Settings(s"jdbc:mysql://$host:$port/$db", s.username, s.password))
+        case (_, Some(host), Some(port), Some(db)) => Some(Settings(s"jdbc:mysql://$host:$port/$db", s.username, s.password))
         case _ => None
       }
     }
