@@ -23,12 +23,12 @@ lazy val flyway = (project in file("flyway")).  settings(commonSettings: _*).
       "mysql"                   % "mysql-connector-java"        % "8.0.12",
       "org.mariadb.jdbc"        % "mariadb-java-client"         % "2.4.0",
       "org.postgresql"          % "postgresql"                  % "42.2.5",
-      "net.sourceforge.jtds"    % "jtds"                        % "1.3.1",
-      "com.ibm.informix"        % "jdbc"                        % "4.10.10.0",
-      "com.h2database"          % "h2"                          % "1.4.197",
-      "org.hsqldb"              % "hsqldb"                      % "2.4.1",
-      "net.snowflake"           % "snowflake-jdbc"              % "3.6.23",
-      "org.firebirdsql.jdbc"    % "jaybird-jdk18"               % "3.0.5",
+//      "net.sourceforge.jtds"    % "jtds"                        % "1.3.1",
+//      "com.ibm.informix"        % "jdbc"                        % "4.10.10.0",
+//      "com.h2database"          % "h2"                          % "1.4.197",
+//      "org.hsqldb"              % "hsqldb"                      % "2.4.1",
+//      "net.snowflake"           % "snowflake-jdbc"              % "3.6.23",
+//      "org.firebirdsql.jdbc"    % "jaybird-jdk18"               % "3.0.5",
       "org.json4s"              %% "json4s-jackson"             % "3.6.5",
       "com.amazonaws"           % "aws-java-sdk-secretsmanager" % "1.11.688"
     ))
